@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Links — South Pacific & PNW</title>
+<title>Links — South Pacific & Oregon</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap');
 
@@ -16,12 +16,9 @@
     --sea:     #1D9E75;
     --foam:    #9FE1CB;
     --pale:    #E8F5F0;
-    --sand:    #F5F0E8;
     --salt:    #FAFAF8;
     --mist:    #6B8A7E;
     --gold:    #C49A3C;
-    --rust:    #8B4A2A;
-
     --ff-display: 'Playfair Display', Georgia, serif;
     --ff-body:    'Inter', system-ui, sans-serif;
   }
@@ -33,20 +30,66 @@
     background: var(--salt);
     color: var(--ink);
     min-height: 100vh;
-    position: relative;
     overflow-x: hidden;
   }
 
-  /* ── HORIZON BACKGROUND ── */
-  body::before {
-    content: '';
+  /* ── ANIMATED OCEAN BACKGROUND ── */
+  .ocean-bg {
     position: fixed;
     inset: 0;
-    background:
-      radial-gradient(ellipse 120% 60% at 50% -10%, rgba(15,110,86,0.12) 0%, transparent 70%),
-      radial-gradient(ellipse 80% 40% at 80% 110%, rgba(29,158,117,0.08) 0%, transparent 60%);
-    pointer-events: none;
     z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  /* deep gradient base */
+  .ocean-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 140% 70% at 50% -5%, rgba(15,110,86,0.13) 0%, transparent 65%),
+      radial-gradient(ellipse 90% 50% at 90% 110%, rgba(29,158,117,0.07) 0%, transparent 60%);
+  }
+
+  /* slow drifting wave layers */
+  .wave {
+    position: absolute;
+    width: 200%;
+    left: -50%;
+    border-radius: 40%;
+    opacity: 0.035;
+    background: var(--sea);
+    animation: drift linear infinite;
+  }
+  .wave-1 { height: 320px; bottom: -160px; animation-duration: 18s; }
+  .wave-2 { height: 280px; bottom: -140px; animation-duration: 24s; animation-delay: -6s; opacity: 0.025; }
+  .wave-3 { height: 240px; bottom: -120px; animation-duration: 32s; animation-delay: -14s; opacity: 0.018; }
+
+  @keyframes drift {
+    0%   { transform: translateX(0) rotate(0deg); }
+    100% { transform: translateX(10%) rotate(1.5deg); }
+  }
+
+  /* floating particles — distant stars/spray */
+  .particles {
+    position: absolute;
+    inset: 0;
+  }
+  .particle {
+    position: absolute;
+    width: 2px; height: 2px;
+    border-radius: 50%;
+    background: var(--foam);
+    animation: float-up linear infinite;
+    opacity: 0;
+  }
+
+  @keyframes float-up {
+    0%   { transform: translateY(0) scale(1);   opacity: 0; }
+    10%  { opacity: 0.4; }
+    90%  { opacity: 0.15; }
+    100% { transform: translateY(-120px) scale(0.3); opacity: 0; }
   }
 
   /* ── LAYOUT ── */
@@ -60,12 +103,12 @@
 
   /* ── HEADER ── */
   .header {
-    padding: 48px 0 32px;
+    padding: 52px 0 32px;
     text-align: center;
   }
 
   .avatar-ring {
-    width: 80px; height: 80px;
+    width: 82px; height: 82px;
     border-radius: 50%;
     border: 2px solid var(--foam);
     margin: 0 auto 20px;
@@ -77,21 +120,32 @@
     font-weight: 600;
     letter-spacing: -1px;
     position: relative;
+    animation: avatar-breathe 4s ease-in-out infinite;
+  }
+
+  @keyframes avatar-breathe {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(159,225,203,0); }
+    50%       { box-shadow: 0 0 0 8px rgba(159,225,203,0.12); }
   }
 
   .avatar-ring::after {
     content: '';
     position: absolute;
-    inset: -5px;
+    inset: -6px;
     border-radius: 50%;
-    border: 1px solid rgba(159,225,203,0.3);
+    border: 1px solid rgba(159,225,203,0.25);
+    animation: ring-spin 20s linear infinite;
+  }
+
+  @keyframes ring-spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
   }
 
   .handle {
-    font-family: var(--ff-body);
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 500;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--mist);
     margin-bottom: 8px;
@@ -107,34 +161,47 @@
   }
 
   .bio {
-    font-size: 14px;
+    font-size: 13.5px;
     color: var(--mist);
-    line-height: 1.65;
+    line-height: 1.7;
     font-weight: 300;
-    max-width: 320px;
+    max-width: 310px;
     margin: 0 auto 16px;
   }
 
   /* ── VOYAGE BANNER ── */
   .voyage-banner {
-    background: linear-gradient(135deg, var(--deep) 0%, var(--teal) 60%, var(--sea) 100%);
+    background: linear-gradient(135deg, var(--deep) 0%, var(--teal) 55%, var(--sea) 100%);
     border-radius: 14px;
     padding: 16px 20px;
-    margin-bottom: 32px;
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
     gap: 14px;
     position: relative;
     overflow: hidden;
+    text-decoration: none;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
   }
 
-  .voyage-banner::before {
+  .voyage-banner:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(15,110,86,0.28);
+  }
+
+  /* shimmer sweep on the banner */
+  .voyage-banner::after {
     content: '';
     position: absolute;
-    top: -20px; right: -20px;
-    width: 120px; height: 120px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.04);
+    top: 0; left: -75%;
+    width: 50%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent);
+    animation: shimmer 5s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0%   { left: -75%; }
+    40%, 100% { left: 125%; }
   }
 
   .voyage-dot {
@@ -144,14 +211,16 @@
     box-shadow: 0 0 0 3px rgba(159,225,203,0.3);
     animation: pulse 2.2s ease-in-out infinite;
     flex-shrink: 0;
+    position: relative;
+    z-index: 1;
   }
 
   @keyframes pulse {
     0%, 100% { box-shadow: 0 0 0 3px rgba(159,225,203,0.3); }
-    50%       { box-shadow: 0 0 0 6px rgba(159,225,203,0.1); }
+    50%       { box-shadow: 0 0 0 7px rgba(159,225,203,0.1); }
   }
 
-  .voyage-text { flex: 1; }
+  .voyage-text { flex: 1; position: relative; z-index: 1; }
   .voyage-label {
     font-size: 10px;
     font-weight: 500;
@@ -168,9 +237,79 @@
   }
   .voyage-sub {
     font-size: 11px;
-    color: rgba(255,255,255,0.55);
-    margin-top: 1px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 2px;
   }
+  .voyage-arrow {
+    font-size: 16px;
+    color: rgba(255,255,255,0.4);
+    position: relative;
+    z-index: 1;
+    transition: transform 0.18s ease, color 0.18s ease;
+  }
+  .voyage-banner:hover .voyage-arrow {
+    transform: translateX(3px);
+    color: var(--foam);
+  }
+
+  /* ── VOYAGE PROGRESS ── */
+  .voyage-progress {
+    background: #fff;
+    border: 1px solid rgba(15,110,86,0.1);
+    border-radius: 13px;
+    padding: 16px;
+    margin-bottom: 4px;
+  }
+
+  .progress-label {
+    font-size: 11px;
+    color: var(--mist);
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .progress-bar {
+    height: 4px;
+    background: var(--pale);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(to right, var(--teal), var(--foam));
+    width: 0%;
+    transition: width 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .progress-stops { display: flex; justify-content: space-between; }
+
+  .stop { text-align: center; flex: 1; }
+
+  .stop-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--pale);
+    border: 1.5px solid rgba(159,225,203,0.5);
+    margin: 0 auto 4px;
+    transition: background 0.4s, border-color 0.4s, box-shadow 0.4s;
+  }
+  .stop-dot.done   { background: var(--teal); border-color: var(--teal); }
+  .stop-dot.active {
+    background: var(--foam); border-color: var(--sea);
+    box-shadow: 0 0 0 3px rgba(159,225,203,0.3);
+    animation: dot-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes dot-pulse {
+    0%, 100% { box-shadow: 0 0 0 3px rgba(159,225,203,0.3); }
+    50%       { box-shadow: 0 0 0 6px rgba(159,225,203,0.1); }
+  }
+
+  .stop-name { font-size: 9px; color: var(--mist); }
 
   /* ── SECTION LABELS ── */
   .section-label {
@@ -185,15 +324,14 @@
     align-items: center;
     gap: 10px;
   }
-
   .section-label::after {
     content: '';
     flex: 1;
     height: 1px;
-    background: linear-gradient(to right, rgba(107,138,126,0.2), transparent);
+    background: linear-gradient(to right, rgba(107,138,126,0.22), transparent);
   }
 
-  /* ── LINK CARDS ── */
+  /* ── CARDS ── */
   .card {
     display: flex;
     align-items: center;
@@ -205,19 +343,33 @@
     border: 1px solid rgba(15,110,86,0.1);
     text-decoration: none;
     color: inherit;
-    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
     cursor: pointer;
     position: relative;
     overflow: hidden;
   }
 
-  .card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(15,110,86,0.12);
-    border-color: rgba(15,110,86,0.25);
+  /* subtle left-edge accent line that grows on hover */
+  .card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 20%; bottom: 20%;
+    width: 3px;
+    border-radius: 0 2px 2px 0;
+    background: var(--teal);
+    opacity: 0;
+    transition: opacity 0.18s ease, top 0.18s ease, bottom 0.18s ease;
   }
 
-  .card:active { transform: translateY(0); }
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(15,110,86,0.11);
+    border-color: rgba(15,110,86,0.22);
+  }
+
+  .card:hover::before { opacity: 1; top: 10%; bottom: 10%; }
+
+  .card:active { transform: translateY(0); box-shadow: none; }
 
   .card-icon {
     width: 42px; height: 42px;
@@ -225,7 +377,9 @@
     display: flex; align-items: center; justify-content: center;
     font-size: 18px;
     flex-shrink: 0;
+    transition: transform 0.25s ease;
   }
+  .card:hover .card-icon { transform: scale(1.1) rotate(-3deg); }
 
   .card-text { flex: 1; min-width: 0; }
   .card-title {
@@ -248,26 +402,24 @@
 
   .card-arrow {
     font-size: 14px;
-    color: var(--foam);
+    color: rgba(159,225,203,0.8);
     flex-shrink: 0;
-    font-weight: 300;
+    transition: transform 0.18s ease, color 0.18s ease;
   }
+  .card:hover .card-arrow { transform: translateX(3px); color: var(--teal); }
 
-  /* Card color variants */
-  .card-teal   .card-icon { background: var(--pale); color: var(--teal); }
-  .card-deep   .card-icon { background: #E8F0EC; color: var(--deep); }
-  .card-gold   .card-icon { background: #F5EED8; color: var(--gold); }
-  .card-rust   .card-icon { background: #F5EAE4; color: var(--rust); }
-  .card-mist   .card-icon { background: #EFF2F1; color: var(--mist); }
-  .card-ink    .card-icon { background: #E8ECEA; color: var(--ink); }
+  /* color variants */
+  .card-teal .card-icon { background: var(--pale); color: var(--teal); }
+  .card-deep .card-icon { background: #E8F0EC; color: var(--deep); }
+  .card-gold .card-icon { background: #F5EED8; color: var(--gold); }
+  .card-mist .card-icon { background: #EFF2F1; color: var(--mist); }
 
-  /* Coming-soon state */
+  /* coming-soon state */
   .card.locked {
-    opacity: 0.5;
+    opacity: 0.48;
     pointer-events: none;
-    filter: grayscale(0.4);
+    filter: grayscale(0.35);
   }
-
   .card.locked::after {
     content: 'After voyage';
     position: absolute;
@@ -282,57 +434,77 @@
     border-radius: 20px;
   }
 
-  /* ── FEATURED CARD (newsletter) ── */
-  .card-featured {
-    background: linear-gradient(135deg, var(--deep) 0%, var(--teal) 100%);
-    border-color: transparent;
-    color: #fff;
-  }
-
-  .card-featured .card-title { color: #fff; }
-  .card-featured .card-desc  { color: rgba(255,255,255,0.6); }
-  .card-featured .card-arrow { color: var(--foam); }
-  .card-featured .card-icon  { background: rgba(255,255,255,0.12); color: var(--foam); }
-
-  .card-featured:hover {
-    border-color: transparent;
-    box-shadow: 0 10px 28px rgba(15,110,86,0.28);
-  }
-
-  /* ── AFFILIATE ROW (small chips) ── */
-  .affiliate-row {
+  /* ── AFFILIATE SECTION ── */
+  /* single full-width card style for affiliate links */
+  .aff-card {
     display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-top: 4px;
-  }
-
-  .aff-chip {
-    display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 8px 12px;
-    border-radius: 10px;
+    gap: 14px;
+    padding: 14px 16px;
+    border-radius: 13px;
+    margin-bottom: 10px;
     background: #fff;
     border: 1px solid rgba(15,110,86,0.1);
     text-decoration: none;
-    font-size: 12px;
-    font-weight: 400;
+    color: inherit;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .aff-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 20%; bottom: 20%;
+    width: 3px;
+    border-radius: 0 2px 2px 0;
+    background: var(--gold);
+    opacity: 0;
+    transition: opacity 0.18s ease, top 0.18s ease, bottom 0.18s ease;
+  }
+  .aff-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(15,110,86,0.11);
+    border-color: rgba(196,154,60,0.25);
+  }
+  .aff-card:hover::before { opacity: 1; top: 10%; bottom: 10%; }
+  .aff-card:active { transform: translateY(0); box-shadow: none; }
+
+  .aff-icon {
+    width: 42px; height: 42px;
+    border-radius: 10px;
+    background: #F5EED8;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+  }
+  .aff-card:hover .aff-icon { transform: scale(1.1) rotate(-3deg); }
+
+  .aff-text { flex: 1; min-width: 0; }
+  .aff-title {
+    font-size: 14px;
+    font-weight: 500;
     color: var(--ink);
-    flex: 1;
-    min-width: 120px;
-    transition: transform 0.15s ease, border-color 0.15s ease;
+    margin-bottom: 2px;
+  }
+  .aff-desc {
+    font-size: 12px;
+    color: var(--mist);
+    font-weight: 300;
+  }
+  .aff-badge {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: #F5EED8;
+    padding: 3px 8px;
+    border-radius: 20px;
+    flex-shrink: 0;
   }
 
-  .aff-chip:hover {
-    transform: translateY(-1px);
-    border-color: rgba(15,110,86,0.25);
-  }
-
-  .aff-chip-icon { font-size: 14px; }
-  .aff-chip-text { font-size: 11px; color: var(--mist); }
-
-  /* ── COMING SOON SECTION ── */
+  /* ── COMING SOON GRID ── */
   .coming-soon-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -341,97 +513,39 @@
 
   .cs-card {
     background: #fff;
-    border: 1px dashed rgba(107,138,126,0.25);
+    border: 1px dashed rgba(107,138,126,0.22);
     border-radius: 12px;
     padding: 14px;
-    opacity: 0.6;
+    opacity: 0.55;
+    transition: opacity 0.2s ease;
   }
+  .cs-card:hover { opacity: 0.75; }
 
   .cs-icon { font-size: 20px; margin-bottom: 6px; }
   .cs-title { font-size: 12px; font-weight: 500; color: var(--ink); margin-bottom: 2px; }
   .cs-when  { font-size: 10px; color: var(--mist); letter-spacing: 0.04em; }
 
-  /* ── VOYAGE PROGRESS ── */
-  .voyage-progress {
-    background: #fff;
-    border: 1px solid rgba(15,110,86,0.1);
-    border-radius: 13px;
-    padding: 16px;
-    margin-top: 4px;
-  }
-
-  .progress-label {
-    font-size: 11px;
-    color: var(--mist);
-    margin-bottom: 8px;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .progress-bar {
-    height: 4px;
-    background: var(--pale);
-    border-radius: 4px;
-    overflow: hidden;
-    margin-bottom: 12px;
-  }
-
-  .progress-fill {
-    height: 100%;
-    border-radius: 4px;
-    background: linear-gradient(to right, var(--teal), var(--foam));
-    width: 0%;
-    transition: width 1s ease;
-  }
-
-  .progress-stops {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .stop {
-    text-align: center;
-    flex: 1;
-  }
-
-  .stop-dot {
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: var(--pale);
-    border: 1.5px solid var(--foam);
-    margin: 0 auto 3px;
-  }
-
-  .stop-dot.done   { background: var(--teal); border-color: var(--teal); }
-  .stop-dot.active { background: var(--foam); border-color: var(--sea); box-shadow: 0 0 0 3px rgba(159,225,203,0.3); }
-
-  .stop-name { font-size: 9px; color: var(--mist); }
-
   /* ── FOOTER ── */
   .footer {
     text-align: center;
-    padding-top: 32px;
+    padding-top: 36px;
     font-size: 11px;
     color: var(--mist);
-    opacity: 0.5;
+    opacity: 0.45;
     font-weight: 300;
   }
 
   /* ── SCROLL REVEAL ── */
   .reveal {
     opacity: 0;
-    transform: translateY(16px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
+    transform: translateY(18px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
   }
-
-  .reveal.visible {
-    opacity: 1;
-    transform: none;
-  }
+  .reveal.visible { opacity: 1; transform: none; }
 
   @media (prefers-reduced-motion: reduce) {
     .reveal { opacity: 1; transform: none; }
-    @keyframes pulse { from, to { box-shadow: 0 0 0 3px rgba(159,225,203,0.3); } }
+    .wave, .particle, .voyage-banner::after, .avatar-ring::after { animation: none; }
   }
 
   @media (max-width: 400px) {
@@ -440,81 +554,97 @@
 </style>
 </head>
 <body>
+
+<!-- ANIMATED BACKGROUND -->
+<div class="ocean-bg" aria-hidden="true">
+  <div class="wave wave-1"></div>
+  <div class="wave wave-2"></div>
+  <div class="wave wave-3"></div>
+  <div class="particles" id="particles"></div>
+</div>
+
 <div class="page">
 
   <!-- HEADER -->
   <header class="header reveal">
     <div class="avatar-ring">SP</div>
-    <div class="handle">@ugh.itsandrew</div>
-    <div class="name">Sailing South Pacific</div>
-    <p class="bio">Palau → Raja Ampat → Komodo → Bali · Jul–Aug 2026 · Travel, adventure, Pacific</p>
+    <div class="handle">@yourhandle</div>
+    <div class="name">South Pacific &amp; Oregon</div>
+    <p class="bio">Sailing Palau → Raja Ampat → Komodo → Bali · Jul–Aug 2026<br>Travel, adventure &amp; the Pacific Northwest</p>
   </header>
 
-  <!-- VOYAGE BANNER -->
-  <div class="voyage-banner reveal">
+  <!-- ═══════════════════════════════════
+       VOYAGE BANNER  →  links to latest trip log
+       UPDATE: change the href below each time a new log posts.
+       Format: https://www.seamester.com/semesters/fiji-to-bali-summer-2026/#day-XX
+       The day title and number in voyage-title / voyage-sub update manually too.
+  ════════════════════════════════════ -->
+  <a href="https://www.seamester.com/semesters/fiji-to-bali-summer-2026/"
+     target="_blank" rel="noopener"
+     class="voyage-banner reveal"
+     id="voyage-banner">
     <div class="voyage-dot"></div>
     <div class="voyage-text">
-      <div class="voyage-label">Currently aboard S/Y Argo</div>
-      <div class="voyage-title">40-Day South Pacific Voyage</div>
-      <div class="voyage-sub">Follow the daily dispatch → Day X of sailing</div>
+      <div class="voyage-label" id="voyage-status">Departing Jul 14 · S/Y Argo</div>
+      <!-- UPDATE THESE TWO LINES each time a new log is posted -->
+      <div class="voyage-title" id="voyage-day-title">40-Day South Pacific Voyage</div>
+      <div class="voyage-sub" id="voyage-sub">Read the latest dispatch →</div>
     </div>
-    <div style="font-size:22px;">⛵</div>
-  </div>
+    <div class="voyage-arrow">→</div>
+  </a>
 
   <!-- VOYAGE PROGRESS -->
   <div class="voyage-progress reveal">
     <div class="progress-label">
       <span>Route progress</span>
-      <span style="color:var(--teal);font-weight:500;">Jul 14 → Aug 22</span>
+      <span style="color:var(--teal);font-weight:500;" id="progress-dates">Jul 14 → Aug 22</span>
     </div>
     <div class="progress-bar">
       <div class="progress-fill" id="progressFill"></div>
     </div>
     <div class="progress-stops">
-      <div class="stop">
-        <div class="stop-dot active" id="dot-palau"></div>
-        <div class="stop-name">Palau</div>
-      </div>
-      <div class="stop">
-        <div class="stop-dot" id="dot-raja"></div>
-        <div class="stop-name">Raja Ampat</div>
-      </div>
-      <div class="stop">
-        <div class="stop-dot" id="dot-komodo"></div>
-        <div class="stop-name">Komodo</div>
-      </div>
-      <div class="stop">
-        <div class="stop-dot" id="dot-bali"></div>
-        <div class="stop-name">Bali</div>
-      </div>
+      <div class="stop"><div class="stop-dot" id="dot-palau"></div><div class="stop-name">Palau</div></div>
+      <div class="stop"><div class="stop-dot" id="dot-raja"></div><div class="stop-name">Raja Ampat</div></div>
+      <div class="stop"><div class="stop-dot" id="dot-komodo"></div><div class="stop-name">Komodo</div></div>
+      <div class="stop"><div class="stop-dot" id="dot-bali"></div><div class="stop-name">Bali</div></div>
     </div>
   </div>
 
-  <!-- SECTION: FOLLOW THE STORY -->
+  <!-- ══════════════════════════════════
+       FOLLOW THE STORY
+  ═══════════════════════════════════ -->
   <div class="section-label reveal">Follow the story</div>
 
-  <a href="#" class="card card-teal reveal" onclick="return false">
+  <!-- Voyage Log: replace # with your Substack URL when ready -->
+  <a href="#" target="_blank" rel="noopener" class="card card-teal reveal">
     <div class="card-icon">📬</div>
     <div class="card-text">
       <div class="card-title">The Voyage Log — Newsletter</div>
-      <div class="card-desc">Daily journal entries, unfiltered. Free to start.</div>
+      <div class="card-desc">Journal entries from sea, unfiltered. Free.</div>
     </div>
     <div class="card-arrow">→</div>
   </a>
 
-  <a href="#" class="card card-featured reveal" onclick="return false">
-    <div class="card-icon">🌊</div>
+  <!-- Follow the Voyage: links to Seamester trip log page -->
+  <a href="https://www.seamester.com/semesters/fiji-to-bali-summer-2026/"
+     target="_blank" rel="noopener"
+     class="card reveal"
+     style="background:linear-gradient(135deg,var(--deep) 0%,var(--teal) 100%);border-color:transparent;">
+    <div class="card-icon" style="background:rgba(255,255,255,0.12);color:var(--foam);">🌊</div>
     <div class="card-text">
-      <div class="card-title">Follow the voyage — subscribe</div>
-      <div class="card-desc">Get dispatches while I'm at sea</div>
+      <div class="card-title" style="color:#fff;">Follow the voyage — trip logs</div>
+      <div class="card-desc" style="color:rgba(255,255,255,0.55);">Daily dispatches from S/Y Argo</div>
     </div>
-    <div class="card-arrow">→</div>
+    <div class="card-arrow" style="color:var(--foam);">→</div>
   </a>
 
-  <!-- SECTION: PLAN YOUR TRIP -->
+  <!-- ══════════════════════════════════
+       PLAN YOUR TRIP
+  ═══════════════════════════════════ -->
   <div class="section-label reveal">Plan your trip</div>
 
-  <a href="#" class="card card-deep reveal" onclick="return false">
+  <!-- Oregon Coast Guide: replace # with Gumroad product URL -->
+  <a href="#" target="_blank" rel="noopener" class="card card-deep reveal">
     <div class="card-icon">🗺️</div>
     <div class="card-text">
       <div class="card-title">Oregon Coast Guide — PDF</div>
@@ -523,16 +653,18 @@
     <div class="card-arrow">→</div>
   </a>
 
-  <a href="#" class="card card-gold reveal" onclick="return false">
+  <!-- Sailboat Guide: replace # with your blog post URL (free) -->
+  <a href="#" target="_blank" rel="noopener" class="card card-gold reveal">
     <div class="card-icon">⛵</div>
     <div class="card-text">
-      <div class="card-title">How I Got on a Sailboat — Guide</div>
-      <div class="card-desc">Seamester, crew agencies, costs, what to pack</div>
+      <div class="card-title">How I Got on a Sailboat</div>
+      <div class="card-desc">Free guide · Seamester, crew agencies, costs</div>
     </div>
     <div class="card-arrow">→</div>
   </a>
 
-  <a href="#" class="card card-mist reveal" onclick="return false">
+  <!-- Trip Planning Call: replace # with TidyCal booking URL -->
+  <a href="#" target="_blank" rel="noopener" class="card card-mist reveal">
     <div class="card-icon">📞</div>
     <div class="card-text">
       <div class="card-title">Book a Trip Planning Call</div>
@@ -541,134 +673,138 @@
     <div class="card-arrow">→</div>
   </a>
 
-  <!-- SECTION: GEAR I TRUST -->
+  <!-- ══════════════════════════════════
+       GEAR I ACTUALLY USE
+       Add more aff-card blocks below as you sign up for more programs.
+  ═══════════════════════════════════ -->
   <div class="section-label reveal">Gear I actually use</div>
 
-  <div class="reveal">
-    <div class="affiliate-row">
-      <a href="https://www.rei.com" class="aff-chip" target="_blank" rel="noopener">
-        <span class="aff-chip-icon">🏕️</span>
-        <div>
-          <div style="font-weight:500;">REI</div>
-          <div class="aff-chip-text">Outdoor gear</div>
-        </div>
-      </a>
-      <a href="https://www.worldnomads.com" class="aff-chip" target="_blank" rel="noopener">
-        <span class="aff-chip-icon">🛡️</span>
-        <div>
-          <div style="font-weight:500;">World Nomads</div>
-          <div class="aff-chip-text">Adventure insurance</div>
-        </div>
-      </a>
+  <a href="https://amzn.to/4awKLsA"
+     target="_blank" rel="noopener"
+     class="aff-card reveal">
+    <div class="aff-icon">📦</div>
+    <div class="aff-text">
+      <div class="aff-title">My Amazon Picks</div>
+      <div class="aff-desc">Gear I actually packed for the voyage</div>
     </div>
-    <div class="affiliate-row" style="margin-top:8px;">
-      <a href="https://gopro.com" class="aff-chip" target="_blank" rel="noopener">
-        <span class="aff-chip-icon">📷</span>
-        <div>
-          <div style="font-weight:500;">GoPro</div>
-          <div class="aff-chip-text">Camera + housing</div>
-        </div>
-      </a>
-      <a href="https://www.dan.org" class="aff-chip" target="_blank" rel="noopener">
-        <span class="aff-chip-icon">🤿</span>
-        <div>
-          <div style="font-weight:500;">DAN</div>
-          <div class="aff-chip-text">Dive insurance</div>
-        </div>
-      </a>
-    </div>
-  </div>
+    <div class="aff-badge">Shop →</div>
+  </a>
 
-  <!-- SECTION: COMING AFTER VOYAGE -->
+  <!-- ══════════════════════════════════
+       COMING AFTER THE VOYAGE
+  ═══════════════════════════════════ -->
   <div class="section-label reveal">Coming after the voyage</div>
 
   <div class="coming-soon-grid reveal">
     <div class="cs-card">
       <div class="cs-icon">🐠</div>
       <div class="cs-title">Dive Trip Planning Guide</div>
-      <div class="cs-when">Available · Sep 2026</div>
-    </div>
-    <div class="cs-card">
-      <div class="cs-icon">🖼️</div>
-      <div class="cs-title">Photo Print Shop</div>
-      <div class="cs-when">Manta rays · Pink Beach · Komodo</div>
+      <div class="cs-when">Coming soon</div>
     </div>
     <div class="cs-card">
       <div class="cs-icon">🎥</div>
       <div class="cs-title">Voyage Documentary</div>
-      <div class="cs-when">YouTube · Fall 2026</div>
-    </div>
-    <div class="cs-card">
-      <div class="cs-icon">🎓</div>
-      <div class="cs-title">Creator Workshop</div>
-      <div class="cs-when">Travel content systems</div>
+      <div class="cs-when">Coming soon</div>
     </div>
   </div>
 
-  <!-- FOOTER -->
   <div class="footer reveal">
     <p>Building in public · Oregon &amp; the South Pacific · 2026</p>
   </div>
 
-</div>
+</div><!-- /page -->
 
 <script>
-// ── SCROLL REVEAL ──────────────────────────────────────────────────────────
+// ─── FLOATING PARTICLES ────────────────────────────────────────────────────
+(function() {
+  const container = document.getElementById('particles');
+  const count = 18;
+  for (let i = 0; i < count; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.cssText = [
+      `left: ${Math.random() * 100}%`,
+      `bottom: ${Math.random() * 60}%`,
+      `animation-duration: ${8 + Math.random() * 14}s`,
+      `animation-delay: ${Math.random() * -20}s`,
+      `width: ${1 + Math.random() * 2}px`,
+      `height: ${1 + Math.random() * 2}px`,
+    ].join(';');
+    container.appendChild(p);
+  }
+})();
+
+// ─── SCROLL REVEAL ─────────────────────────────────────────────────────────
 const reveals = document.querySelectorAll('.reveal');
-const observer = new IntersectionObserver(entries => {
+const io = new IntersectionObserver(entries => {
   entries.forEach((e, i) => {
     if (e.isIntersecting) {
-      setTimeout(() => e.target.classList.add('visible'), i * 60);
-      observer.unobserve(e.target);
+      setTimeout(() => e.target.classList.add('visible'), i * 55);
+      io.unobserve(e.target);
     }
   });
-}, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
-reveals.forEach(el => observer.observe(el));
+}, { threshold: 0.06, rootMargin: '0px 0px -24px 0px' });
+reveals.forEach(el => io.observe(el));
 
-// ── VOYAGE PROGRESS BAR ────────────────────────────────────────────────────
+// ─── VOYAGE PROGRESS + BANNER STATUS ──────────────────────────────────────
 (function() {
-  const start  = new Date('2026-07-14');
-  const end    = new Date('2026-08-22');
-  const rajaStart   = new Date('2026-07-22');
-  const komodoStart = new Date('2026-08-06');
-  const baliStart   = new Date('2026-08-13');
+  const VOYAGE_START  = new Date('2026-07-14');
+  const VOYAGE_END    = new Date('2026-08-22');
+  const RAJA_START    = new Date('2026-07-22');
+  const KOMODO_START  = new Date('2026-08-06');
+  const BALI_START    = new Date('2026-08-13');
 
-  const now    = new Date();
-  const total  = end - start;
-  const elapsed = Math.max(0, Math.min(now - start, total));
-  const pct    = total > 0 ? (elapsed / total) * 100 : 0;
+  const now     = new Date();
+  const total   = VOYAGE_END - VOYAGE_START;
+  const elapsed = Math.max(0, Math.min(now - VOYAGE_START, total));
+  const pct     = total > 0 ? (elapsed / total) * 100 : 0;
 
+  // Progress bar fill (delay so the CSS transition plays visibly)
   setTimeout(() => {
     document.getElementById('progressFill').style.width = pct + '%';
-  }, 600);
+  }, 700);
 
-  function setDot(id, state) {
+  // Dot states
+  function dot(id, state) {
     const el = document.getElementById(id);
-    if (!el) return;
-    el.className = 'stop-dot' + (state === 'done' ? ' done' : state === 'active' ? ' active' : '');
+    if (el) el.className = 'stop-dot' + (state ? ' ' + state : '');
   }
 
-  if (now < start) {
-    setDot('dot-palau', '');
-  } else if (now < rajaStart) {
-    setDot('dot-palau', 'active');
-  } else if (now < komodoStart) {
-    setDot('dot-palau', 'done');
-    setDot('dot-raja', 'active');
-  } else if (now < baliStart) {
-    setDot('dot-palau', 'done');
-    setDot('dot-raja', 'done');
-    setDot('dot-komodo', 'active');
-  } else if (now <= end) {
-    setDot('dot-palau', 'done');
-    setDot('dot-raja', 'done');
-    setDot('dot-komodo', 'done');
-    setDot('dot-bali', 'active');
+  // Banner status label
+  const statusEl   = document.getElementById('voyage-status');
+  const dayTitleEl = document.getElementById('voyage-day-title');
+  const subEl      = document.getElementById('voyage-sub');
+
+  if (now < VOYAGE_START) {
+    // Pre-departure
+    const days = Math.ceil((VOYAGE_START - now) / 86400000);
+    statusEl.textContent   = `Departing in ${days} day${days === 1 ? '' : 's'} · S/Y Argo`;
+    dayTitleEl.textContent = '40-Day South Pacific Voyage';
+    subEl.textContent      = 'Follow the trip logs on Seamester →';
+    dot('dot-palau', ''); dot('dot-raja', ''); dot('dot-komodo', ''); dot('dot-bali', '');
+
+  } else if (now < RAJA_START) {
+    statusEl.textContent = 'Currently at sea · Palau';
+    dot('dot-palau', 'active');
+
+  } else if (now < KOMODO_START) {
+    statusEl.textContent = 'Currently at sea · Raja Ampat';
+    dot('dot-palau', 'done'); dot('dot-raja', 'active');
+
+  } else if (now < BALI_START) {
+    statusEl.textContent = 'Currently at sea · Komodo';
+    dot('dot-palau', 'done'); dot('dot-raja', 'done'); dot('dot-komodo', 'active');
+
+  } else if (now <= VOYAGE_END) {
+    statusEl.textContent = 'Currently in Bali';
+    dot('dot-palau', 'done'); dot('dot-raja', 'done'); dot('dot-komodo', 'done'); dot('dot-bali', 'active');
+
   } else {
-    setDot('dot-palau', 'done');
-    setDot('dot-raja', 'done');
-    setDot('dot-komodo', 'done');
-    setDot('dot-bali', 'done');
+    // Post-voyage
+    statusEl.textContent   = 'Voyage complete · Aug 2026';
+    dayTitleEl.textContent = '40-Day South Pacific Voyage';
+    subEl.textContent      = 'Read the full trip log →';
+    dot('dot-palau', 'done'); dot('dot-raja', 'done'); dot('dot-komodo', 'done'); dot('dot-bali', 'done');
   }
 })();
 </script>
