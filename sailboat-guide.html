@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How I Got on a Sailboat — Andrew</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #0D1A2E; --deep: #0A2547; --teal: #1155CC; --sea: #2979FF;
+    --foam: #90CAF9; --pale: #E3F2FD; --salt: #F8FAFF; --mist: #5C7A9E;
+    --gold: #C49A3C;
+    --ff-display: 'Playfair Display', Georgia, serif;
+    --ff-body: 'Inter', system-ui, sans-serif;
+  }
+  body { font-family: var(--ff-body); background: var(--salt); color: var(--ink); min-height: 100vh; }
+
+  /* NAV */
+  .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(248,250,255,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(17,85,204,0.1); }
+  .nav-inner { max-width: 680px; margin: 0 auto; padding: 0 20px; height: 52px; display: flex; align-items: center; justify-content: space-between; }
+  .nav-logo { font-family: var(--ff-display); font-size: 15px; font-weight: 600; color: var(--ink); text-decoration: none; }
+  .nav-logo span { color: var(--teal); }
+  .nav-menu { position: relative; }
+  .nav-trigger { display: flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 30px; border: 1px solid rgba(17,85,204,0.18); background: #fff; font-size: 12px; font-weight: 500; color: var(--mist); cursor: pointer; transition: border-color 0.15s, color 0.15s; user-select: none; }
+  .nav-trigger:hover { border-color: var(--teal); color: var(--teal); }
+  .nav-trigger svg { width: 13px; height: 13px; transition: transform 0.2s; }
+  .nav-menu.open .nav-trigger svg { transform: rotate(180deg); }
+  .nav-dropdown { position: absolute; top: calc(100% + 8px); right: 0; min-width: 200px; background: #fff; border: 1px solid rgba(17,85,204,0.12); border-radius: 12px; box-shadow: 0 8px 28px rgba(17,85,204,0.12); overflow: hidden; opacity: 0; transform: translateY(-6px); pointer-events: none; transition: opacity 0.18s, transform 0.18s; }
+  .nav-menu.open .nav-dropdown { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 12px 16px; text-decoration: none; color: var(--ink); font-size: 13px; transition: background 0.12s; border-bottom: 1px solid rgba(17,85,204,0.06); }
+  .nav-item:last-child { border-bottom: none; }
+  .nav-item:hover { background: var(--pale); color: var(--teal); }
+  .nav-item-icon { font-size: 15px; width: 20px; text-align: center; flex-shrink: 0; }
+  .nav-item-badge { font-size: 9px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 6px; border-radius: 20px; background: var(--pale); color: var(--teal); margin-left: auto; }
+  .nav-divider { padding: 6px 16px 4px; font-size: 9px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mist); background: rgba(17,85,204,0.03); }
+
+  /* PAGE */
+  .page { max-width: 680px; margin: 0 auto; padding: 80px 20px 80px; }
+  .back { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--mist); text-decoration: none; margin-bottom: 32px; transition: color 0.15s; }
+  .back:hover { color: var(--teal); }
+
+  /* HERO */
+  .hero { margin-bottom: 40px; }
+  .hero-tag { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); background: var(--pale); padding: 4px 12px; border-radius: 20px; margin-bottom: 16px; }
+  .hero-title { font-family: var(--ff-display); font-size: 34px; font-weight: 600; color: var(--ink); line-height: 1.25; margin-bottom: 14px; }
+  .hero-sub { font-size: 15px; color: var(--mist); line-height: 1.7; font-weight: 300; max-width: 560px; }
+  .free-badge { display: inline-flex; align-items: center; gap: 6px; margin-top: 16px; font-size: 12px; font-weight: 600; color: var(--teal); background: var(--pale); padding: 6px 14px; border-radius: 20px; }
+
+  /* DIVIDER */
+  .divider { height: 1px; background: linear-gradient(to right, transparent, rgba(17,85,204,0.15), transparent); margin: 36px 0; }
+
+  /* SECTION */
+  .section-label { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mist); margin-bottom: 16px; }
+  .section-title { font-family: var(--ff-display); font-size: 22px; font-weight: 600; color: var(--ink); margin-bottom: 10px; }
+  .body-text { font-size: 14px; color: var(--mist); line-height: 1.75; margin-bottom: 20px; font-weight: 300; }
+  .body-text strong { color: var(--ink); font-weight: 500; }
+
+  /* PATHWAY CARDS */
+  .pathway-grid { display: grid; gap: 12px; margin-bottom: 8px; }
+  .pathway { background: #fff; border: 1px solid rgba(17,85,204,0.1); border-radius: 13px; padding: 18px; position: relative; overflow: hidden; }
+  .pathway::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--teal); }
+  .pathway-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+  .pathway-name { font-size: 15px; font-weight: 500; color: var(--ink); }
+  .pathway-tag { font-size: 9px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 8px; border-radius: 20px; flex-shrink: 0; }
+  .tag-structured { background: #E3F2FD; color: var(--teal); }
+  .tag-agency    { background: #F5EED8; color: var(--gold); }
+  .tag-free      { background: #E8F4E8; color: #2E7D32; }
+  .pathway-desc { font-size: 13px; color: var(--mist); line-height: 1.65; margin-bottom: 10px; }
+  .pathway-meta { display: flex; flex-wrap: wrap; gap: 10px; }
+  .pathway-meta span { font-size: 11px; color: var(--mist); background: rgba(17,85,204,0.05); padding: 3px 9px; border-radius: 20px; }
+
+  /* CALLOUT */
+  .callout { background: var(--pale); border-left: 3px solid var(--teal); border-radius: 0 12px 12px 0; padding: 14px 18px; margin: 24px 0; }
+  .callout-title { font-size: 12px; font-weight: 600; color: var(--teal); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .callout-list { list-style: none; }
+  .callout-list li { font-size: 13px; color: var(--ink); line-height: 1.7; padding-left: 14px; position: relative; }
+  .callout-list li::before { content: '→'; position: absolute; left: 0; color: var(--teal); font-size: 11px; }
+
+  /* CTA */
+  .cta-box { background: #fff; border: 1px solid rgba(17,85,204,0.15); border-radius: 16px; padding: 28px; text-align: center; margin-top: 40px; }
+  .cta-title { font-family: var(--ff-display); font-size: 20px; color: var(--ink); margin-bottom: 8px; }
+  .cta-desc { font-size: 13px; color: var(--mist); line-height: 1.6; max-width: 400px; margin: 0 auto 20px; }
+  .cta-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 26px; border-radius: 10px; background: linear-gradient(135deg, var(--deep), var(--teal)); color: #fff; font-size: 14px; font-weight: 500; text-decoration: none; transition: transform 0.15s, box-shadow 0.15s; }
+  .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(17,85,204,0.28); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Andrew<span>.</span></a>
+    <div class="nav-menu" id="navMenu">
+      <button class="nav-trigger" id="navTrigger" aria-expanded="false">Pages
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="nav-dropdown">
+        <div class="nav-divider">Home</div>
+        <a href="index.html" class="nav-item"><span class="nav-item-icon">🔗</span>Links</a>
+        <div class="nav-divider">Guides</div>
+        <a href="oregon-coast.html" class="nav-item"><span class="nav-item-icon">🗺️</span>Oregon Coast Guide<span class="nav-item-badge">Free preview</span></a>
+        <a href="sailboat-guide.html" class="nav-item"><span class="nav-item-icon">⛵</span>How I Got on a Sailboat<span class="nav-item-badge">Free</span></a>
+        <div class="nav-divider">Book</div>
+        <a href="https://cal.com/andrew-e-yqj082/1hr-trip-planning-meeting" target="_blank" rel="noopener" class="nav-item"><span class="nav-item-icon">📞</span>Trip Planning Call<span class="nav-item-badge">$50</span></a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+  <a href="index.html" class="back">← Back to links</a>
+
+  <div class="hero">
+    <div class="hero-tag">Free Guide</div>
+    <h1 class="hero-title">How I Got on a Sailboat<br>for 40 Days</h1>
+    <p class="hero-sub">I looked everywhere for a clear answer to this question before I left. I couldn't find it in one place. This is everything I know — the programs, the agencies, the costs, and what I wish someone had told me.</p>
+    <div class="free-badge">✓ Completely free — no email required</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PATH 1: SEAMESTER -->
+  <div class="section-label">Path 01 — Structured Programs</div>
+  <div class="section-title">Seamester & Academic Voyages</div>
+  <p class="body-text">This is the path I took. <strong>Seamester</strong> runs semester-at-sea programs aboard their tall ships — you earn real college credits (USF accredited), get SCUBA certified, and sail routes like Palau to Bali with a crew of 30. It's not cheap, but it's structured, safe, and gives you credentials that open doors afterward.</p>
+
+  <div class="pathway-grid">
+    <div class="pathway">
+      <div class="pathway-top">
+        <div class="pathway-name">Seamester</div>
+        <span class="pathway-tag tag-structured">Academic</span>
+      </div>
+      <div class="pathway-desc">Full semester programs in the Pacific, Caribbean, and Mediterranean. 3 USF college credits, dive certifications included, safety staff onboard. Apply 6–9 months out. My program ran Palau → Raja Ampat → Komodo → Bali.</div>
+      <div class="pathway-meta">
+        <span>💲 $15,000–$22,000</span>
+        <span>📅 Apply 6–9 months ahead</span>
+        <span>🌐 seamester.com</span>
+      </div>
+    </div>
+    <div class="pathway">
+      <div class="pathway-top">
+        <div class="pathway-name">Semester at Sea</div>
+        <span class="pathway-tag tag-structured">Academic</span>
+      </div>
+      <div class="pathway-desc">Larger ship (700+ students), more ports, University of Virginia accredited. Less intimate than Seamester but more destinations per voyage. Good if you want to collect ports rather than dive deep into a region.</div>
+      <div class="pathway-meta">
+        <span>💲 $25,000–$30,000</span>
+        <span>📅 Apply 9–12 months ahead</span>
+        <span>🌐 semesteratsea.org</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PATH 2: CREW AGENCIES -->
+  <div class="section-label">Path 02 — Crew Agencies</div>
+  <div class="section-title">Find-a-Crew & Work Exchange</div>
+  <p class="body-text">If you want to get on a boat without paying program fees, crew agencies are how most people do it. You list your availability and skills; boat owners post open positions. Some are paid, some are food-and-bunk exchanges, some ask for a small contribution to expenses. The more flexible your schedule, the more options open up.</p>
+
+  <div class="pathway-grid">
+    <div class="pathway">
+      <div class="pathway-top">
+        <div class="pathway-name">Find-a-Crew</div>
+        <span class="pathway-tag tag-agency">Crew platform</span>
+      </div>
+      <div class="pathway-desc">The largest crew placement platform. Boats post open positions; you apply. Works best for experienced sailors but there are beginner-friendly passages, especially in the Caribbean and Pacific.</div>
+      <div class="pathway-meta">
+        <span>💲 Free to browse, ~$50/year for full access</span>
+        <span>🌐 find-a-crew.net</span>
+      </div>
+    </div>
+    <div class="pathway">
+      <div class="pathway-top">
+        <div class="pathway-name">Crewseekers</div>
+        <span class="pathway-tag tag-agency">Crew platform</span>
+      </div>
+      <div class="pathway-desc">UK-based but global listings. Strong Atlantic and Mediterranean options. Interface is older but the listings are genuine. Good for finding longer offshore passages.</div>
+      <div class="pathway-meta">
+        <span>💲 ~£40/year</span>
+        <span>🌐 crewseekers.net</span>
+      </div>
+    </div>
+    <div class="pathway">
+      <div class="pathway-top">
+        <div class="pathway-name">Yacht delivery work</div>
+        <span class="pathway-tag tag-free">Get paid</span>
+      </div>
+      <div class="pathway-desc">Owners need boats moved between locations — marinas, across oceans, after purchases. Delivery companies hire crew for legs. You can get paid while logging offshore miles. Requires some experience but not as much as you'd think for shorter legs.</div>
+      <div class="pathway-meta">
+        <span>💲 Paid (~$100–200/day)</span>
+        <span>📅 Flexible, short-notice often</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- WHAT I'D TELL MYSELF -->
+  <div class="section-label">Honest advice</div>
+  <div class="section-title">What I wish I'd known before I left</div>
+
+  <div class="callout">
+    <div class="callout-title">The things that actually matter</div>
+    <ul class="callout-list">
+      <li>Budget 30–50% more than the listed program cost — flights, gear, visas, and incidentals add up fast</li>
+      <li>Get your Open Water certification before you go — every program gives you more time in the water if you're not starting from zero</li>
+      <li>A dry bag, a good headlamp, and seasickness medication are more important than any piece of tech you bring</li>
+      <li>For crew agency positions, your first boat won't be your best one — take it anyway and use it to get references for the next</li>
+      <li>The social dynamic of a small boat is the thing nobody warns you about — 8 people in 40 feet is intense, and that's fine, but know it going in</li>
+    </ul>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-box">
+    <div class="cta-title">Have more specific questions?</div>
+    <div class="cta-desc">I do 1-on-1 trip planning calls — 60 minutes, $50, and I'll walk through your exact situation: budget, timeline, experience level, and which path actually makes sense for you.</div>
+    <a href="https://cal.com/andrew-e-yqj082/1hr-trip-planning-meeting" target="_blank" rel="noopener" class="cta-btn">Book a call — $50 →</a>
+  </div>
+</div>
+
+<script>
+const navMenu = document.getElementById('navMenu');
+const navTrigger = document.getElementById('navTrigger');
+navTrigger.addEventListener('click', (e) => { e.stopPropagation(); const open = navMenu.classList.toggle('open'); navTrigger.setAttribute('aria-expanded', open); });
+document.addEventListener('click', () => { navMenu.classList.remove('open'); navTrigger.setAttribute('aria-expanded', false); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') navMenu.classList.remove('open'); });
+</script>
+</body>
+</html>
