@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oregon Coast Guide — Andrew</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #0D1A2E; --deep: #0A2547; --teal: #1155CC; --sea: #2979FF;
+    --foam: #90CAF9; --pale: #E3F2FD; --salt: #F8FAFF; --mist: #5C7A9E;
+    --gold: #C49A3C;
+    --ff-display: 'Playfair Display', Georgia, serif;
+    --ff-body: 'Inter', system-ui, sans-serif;
+  }
+  body { font-family: var(--ff-body); background: var(--salt); color: var(--ink); min-height: 100vh; }
+
+  /* NAV — identical to index */
+  .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(248,250,255,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(17,85,204,0.1); }
+  .nav-inner { max-width: 680px; margin: 0 auto; padding: 0 20px; height: 52px; display: flex; align-items: center; justify-content: space-between; }
+  .nav-logo { font-family: var(--ff-display); font-size: 15px; font-weight: 600; color: var(--ink); text-decoration: none; }
+  .nav-logo span { color: var(--teal); }
+  .nav-menu { position: relative; }
+  .nav-trigger { display: flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 30px; border: 1px solid rgba(17,85,204,0.18); background: #fff; font-size: 12px; font-weight: 500; color: var(--mist); cursor: pointer; transition: border-color 0.15s, color 0.15s, box-shadow 0.15s; user-select: none; }
+  .nav-trigger:hover { border-color: var(--teal); color: var(--teal); box-shadow: 0 2px 8px rgba(17,85,204,0.1); }
+  .nav-trigger svg { width: 13px; height: 13px; transition: transform 0.2s; }
+  .nav-menu.open .nav-trigger svg { transform: rotate(180deg); }
+  .nav-dropdown { position: absolute; top: calc(100% + 8px); right: 0; min-width: 200px; background: #fff; border: 1px solid rgba(17,85,204,0.12); border-radius: 12px; box-shadow: 0 8px 28px rgba(17,85,204,0.12); overflow: hidden; opacity: 0; transform: translateY(-6px); pointer-events: none; transition: opacity 0.18s, transform 0.18s; }
+  .nav-menu.open .nav-dropdown { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 12px 16px; text-decoration: none; color: var(--ink); font-size: 13px; transition: background 0.12s; border-bottom: 1px solid rgba(17,85,204,0.06); }
+  .nav-item:last-child { border-bottom: none; }
+  .nav-item:hover { background: var(--pale); color: var(--teal); }
+  .nav-item-icon { font-size: 15px; width: 20px; text-align: center; flex-shrink: 0; }
+  .nav-item-badge { font-size: 9px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 6px; border-radius: 20px; background: var(--pale); color: var(--teal); margin-left: auto; }
+  .nav-divider { padding: 6px 16px 4px; font-size: 9px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mist); background: rgba(17,85,204,0.03); }
+
+  /* PAGE */
+  .page { max-width: 680px; margin: 0 auto; padding: 80px 20px 80px; }
+
+  /* HERO */
+  .hero { text-align: center; padding: 48px 0 40px; }
+  .hero-tag { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); background: var(--pale); padding: 4px 12px; border-radius: 20px; margin-bottom: 16px; }
+  .hero-title { font-family: var(--ff-display); font-size: 36px; font-weight: 600; color: var(--ink); line-height: 1.2; margin-bottom: 14px; }
+  .hero-sub { font-size: 15px; color: var(--mist); line-height: 1.7; max-width: 480px; margin: 0 auto 28px; font-weight: 300; }
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 13px 26px; border-radius: 12px;
+    background: linear-gradient(135deg, var(--deep), var(--teal));
+    color: #fff; text-decoration: none; font-size: 14px; font-weight: 500;
+    transition: transform 0.18s, box-shadow 0.18s;
+    box-shadow: 0 4px 14px rgba(17,85,204,0.25);
+  }
+  .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(17,85,204,0.32); }
+  .hero-note { font-size: 11px; color: var(--mist); margin-top: 10px; }
+
+  /* DIVIDER */
+  .divider { height: 1px; background: linear-gradient(to right, transparent, rgba(17,85,204,0.15), transparent); margin: 40px 0; }
+
+  /* SECTION */
+  .section-head { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .section-num { width: 28px; height: 28px; border-radius: 50%; background: var(--pale); color: var(--teal); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .section-title { font-family: var(--ff-display); font-size: 20px; font-weight: 600; color: var(--ink); }
+
+  /* STOP CARDS */
+  .stop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; margin-bottom: 8px; }
+  .stop-card { background: #fff; border: 1px solid rgba(17,85,204,0.1); border-radius: 13px; padding: 16px; transition: transform 0.15s, box-shadow 0.15s; }
+  .stop-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(17,85,204,0.1); }
+  .stop-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+  .stop-name { font-size: 14px; font-weight: 500; color: var(--ink); }
+  .stop-badge { font-size: 9px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 8px; border-radius: 20px; flex-shrink: 0; }
+  .badge-must { background: #E3F2FD; color: var(--teal); }
+  .badge-hidden { background: #F5EED8; color: var(--gold); }
+  .badge-tip { background: #EFF2F6; color: var(--mist); }
+  .stop-desc { font-size: 12px; color: var(--mist); line-height: 1.6; margin-bottom: 8px; }
+  .stop-meta { display: flex; gap: 12px; }
+  .stop-meta span { font-size: 11px; color: var(--mist); display: flex; align-items: center; gap: 4px; }
+
+  /* CALLOUT */
+  .callout { background: var(--pale); border-left: 3px solid var(--teal); border-radius: 0 12px 12px 0; padding: 14px 18px; margin: 20px 0; }
+  .callout-title { font-size: 12px; font-weight: 600; color: var(--teal); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .callout-body { font-size: 13px; color: var(--ink); line-height: 1.6; }
+
+  /* BUY BOX */
+  .buy-box { background: linear-gradient(135deg, var(--deep) 0%, var(--teal) 100%); border-radius: 16px; padding: 28px; text-align: center; margin: 40px 0; }
+  .buy-title { font-family: var(--ff-display); font-size: 22px; color: #fff; margin-bottom: 8px; }
+  .buy-desc { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.6; max-width: 360px; margin: 0 auto 20px; }
+  .buy-price { font-size: 32px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .buy-price span { font-size: 14px; font-weight: 400; opacity: 0.7; }
+  .buy-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; border-radius: 10px; background: #fff; color: var(--teal); font-size: 14px; font-weight: 600; text-decoration: none; transition: transform 0.15s, box-shadow 0.15s; margin-top: 16px; }
+  .buy-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+  .buy-note { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 10px; }
+
+  /* BACK LINK */
+  .back { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--mist); text-decoration: none; margin-bottom: 32px; transition: color 0.15s; }
+  .back:hover { color: var(--teal); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Andrew<span>.</span></a>
+    <div class="nav-menu" id="navMenu">
+      <button class="nav-trigger" id="navTrigger" aria-expanded="false">Pages
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="nav-dropdown">
+        <div class="nav-divider">Home</div>
+        <a href="index.html" class="nav-item"><span class="nav-item-icon">🔗</span>Links</a>
+        <div class="nav-divider">Guides</div>
+        <a href="oregon-coast.html" class="nav-item"><span class="nav-item-icon">🗺️</span>Oregon Coast Guide<span class="nav-item-badge">Free preview</span></a>
+        <a href="sailboat-guide.html" class="nav-item"><span class="nav-item-icon">⛵</span>How I Got on a Sailboat<span class="nav-item-badge">Free</span></a>
+        <div class="nav-divider">Book</div>
+        <a href="https://cal.com/andrew-e-yqj082/1hr-trip-planning-meeting" target="_blank" rel="noopener" class="nav-item"><span class="nav-item-icon">📞</span>Trip Planning Call<span class="nav-item-badge">$50</span></a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+  <a href="index.html" class="back">← Back to links</a>
+
+  <div class="hero">
+    <div class="hero-tag">Oregon Coast Guide</div>
+    <h1 class="hero-title">The Locals' Version of<br>Highway 101</h1>
+    <p class="hero-sub">Everything I've learned driving the Oregon coast — the best timing, the hidden stops, and the stuff you won't find on a travel blog.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PREVIEW STOPS -->
+  <div class="section-head">
+    <div class="section-num">1</div>
+    <div class="section-title">Must-stop highlights</div>
+  </div>
+  <div class="stop-grid">
+    <div class="stop-card">
+      <div class="stop-card-top">
+        <div class="stop-name">Haystack Rock, Cannon Beach</div>
+        <span class="stop-badge badge-must">Must-stop</span>
+      </div>
+      <div class="stop-desc">The icon. Best at golden hour when the crowds thin and the light turns the rock orange. Low tide reveals tide pools full of sea stars and anemones.</div>
+      <div class="stop-meta">
+        <span>🕐 Best: 1hr before sunset</span>
+        <span>🅿️ Free street parking</span>
+      </div>
+    </div>
+    <div class="stop-card">
+      <div class="stop-card-top">
+        <div class="stop-name">Thor's Well, Cape Perpetua</div>
+        <span class="stop-badge badge-must">Must-stop</span>
+      </div>
+      <div class="stop-desc">A saltwater drain in the ocean rock that "swallows" the sea. Looks like nothing at low tide. At mid-to-high tide with swell it's unlike anything else on the coast.</div>
+      <div class="stop-meta">
+        <span>🌊 Tide timing critical</span>
+        <span>📍 See full guide for chart</span>
+      </div>
+    </div>
+    <div class="stop-card">
+      <div class="stop-card-top">
+        <div class="stop-name">Natural Bridges, Brookings</div>
+        <span class="stop-badge badge-hidden">Hidden gem</span>
+      </div>
+      <div class="stop-desc">Sea arches carved by waves with the Pacific visible through the openings. Most people drive straight past the pullout. Worth the short scramble down.</div>
+      <div class="stop-meta">
+        <span>🥾 10 min scramble</span>
+        <span>📍 Mile marker 349</span>
+      </div>
+    </div>
+    <div class="stop-card">
+      <div class="stop-card-top">
+        <div class="stop-name">Astoria Column</div>
+        <span class="stop-badge badge-tip">Local tip</span>
+      </div>
+      <div class="stop-desc">Most visitors skip it for the bridge view. Wrong move. The spiral staircase to the top reveals the Columbia River, the Pacific, and three states on a clear day.</div>
+      <div class="stop-meta">
+        <span>🕐 20 min</span>
+        <span>💲 $5 parking pass</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-title">🔒 Full guide includes</div>
+    <div class="callout-body">GPS coordinates for every stop · Tide chart explainer for Thor's Well & Cape Perpetua · Exact parking reality (not what Google Maps says) · 5 hidden pullouts most people drive past · Best time of day for photos at each location · What to skip and why</div>
+  </div>
+
+  <!-- BUY BOX -->
+  <div class="buy-box">
+    <div class="buy-title">The Full Oregon Coast Guide</div>
+    <div class="buy-desc">A one-document trip planner you can open offline while driving the coast. No fluff, no listicle — just the route, stop by stop.</div>
+    <div class="buy-price">$18 <span>one-time · instant download</span></div>
+    <!-- Replace # with your Gumroad product URL -->
+    <a href="#" class="buy-btn">Get the full guide →</a>
+    <div class="buy-note">PDF · ~25 pages · Works offline · No subscription</div>
+  </div>
+
+</div>
+
+<script>
+const navMenu = document.getElementById('navMenu');
+const navTrigger = document.getElementById('navTrigger');
+navTrigger.addEventListener('click', (e) => { e.stopPropagation(); const open = navMenu.classList.toggle('open'); navTrigger.setAttribute('aria-expanded', open); });
+document.addEventListener('click', () => { navMenu.classList.remove('open'); navTrigger.setAttribute('aria-expanded', false); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') navMenu.classList.remove('open'); });
+</script>
+</body>
+</html>
