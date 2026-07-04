@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Links — South Pacific & Oregon</title>
+<title>South Pacific & Pacific Northwest</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap');
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -312,6 +312,98 @@
   .aff-desc { font-size: 12px; color: var(--mist); font-weight: 300; }
   .aff-badge { font-size: 10px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--gold); background: #F5EED8; padding: 3px 8px; border-radius: 20px; flex-shrink: 0; }
 
+  /* ── PHOTO STRIP ── */
+  .photo-strip {
+    display: flex;
+    gap: 8px;
+    margin: 16px 0 4px;
+    overflow: hidden;
+    border-radius: 12px;
+  }
+  .photo-strip-item {
+    flex: 1;
+    aspect-ratio: 1 / 1;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    background: var(--pale);
+  }
+  .photo-strip-item img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+  .photo-strip-item:hover img { transform: scale(1.06); }
+  .photo-strip-item .photo-label {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 18px 8px 6px;
+    background: linear-gradient(to top, rgba(10,37,71,0.65), transparent);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.85);
+    text-align: center;
+  }
+
+  /* ── GEAR PICKER CARD ── */
+  .gear-card {
+    background: #fff;
+    border: 1px solid rgba(17,85,204,0.1);
+    border-radius: 13px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    transition: box-shadow 0.18s;
+  }
+  .gear-card:hover { box-shadow: 0 4px 16px rgba(17,85,204,0.1); }
+  .gear-trigger {
+    display: flex; align-items: center; gap: 14px;
+    padding: 15px 16px;
+    cursor: pointer;
+    user-select: none;
+    width: 100%;
+    background: none;
+    border: none;
+    text-align: left;
+    transition: background 0.15s;
+  }
+  .gear-trigger:hover { background: rgba(17,85,204,0.02); }
+  .gear-icon { width: 42px; height: 42px; border-radius: 10px; background: #F5EED8; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; transition: transform 0.25s; }
+  .gear-trigger:hover .gear-icon { transform: scale(1.08) rotate(-3deg); }
+  .gear-text { flex: 1; min-width: 0; }
+  .gear-title { font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 2px; }
+  .gear-desc { font-size: 12px; color: var(--mist); font-weight: 300; }
+  .gear-chevron { font-size: 13px; color: var(--foam); flex-shrink: 0; transition: transform 0.22s ease, color 0.18s; }
+  .gear-card.open .gear-chevron { transform: rotate(180deg); color: var(--teal); }
+  .gear-items {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+    border-top: 0px solid rgba(17,85,204,0.08);
+  }
+  .gear-card.open .gear-items {
+    max-height: 600px;
+    border-top-width: 1px;
+  }
+  .gear-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 11px 16px;
+    text-decoration: none;
+    color: var(--ink);
+    font-size: 13px;
+    border-bottom: 1px solid rgba(17,85,204,0.05);
+    transition: background 0.12s;
+    gap: 10px;
+  }
+  .gear-item:last-child { border-bottom: none; }
+  .gear-item:hover { background: var(--pale); }
+  .gear-item-name { font-weight: 500; flex: 1; }
+  .gear-item-note { font-size: 11px; color: var(--mist); font-weight: 300; flex-shrink: 0; }
+  .gear-item-arrow { font-size: 12px; color: var(--foam); flex-shrink: 0; transition: transform 0.15s, color 0.15s; }
+  .gear-item:hover .gear-item-arrow { transform: translateX(3px); color: var(--teal); }
+
   /* ── COMING SOON ── */
   .coming-soon-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .cs-card { background: #fff; border: 1px dashed rgba(92,122,158,0.25); border-radius: 12px; padding: 14px; opacity: 0.55; transition: opacity 0.2s; }
@@ -387,7 +479,7 @@
 
   <header class="header reveal">
     <div class="avatar-ring">SP</div>
-    <div class="handle">@yourhandle</div>
+    <div class="handle">@ugh.itsandrew</div>
     <div class="name">South Pacific &amp; Oregon</div>
     <p class="bio">Sailing Palau → Raja Ampat → Komodo → Bali · Jul–Aug 2026<br>Travel, adventure &amp; the Pacific Northwest</p>
     <div class="social-row">
@@ -447,6 +539,22 @@
       <div class="stop"><div class="stop-dot" id="dot-raja"></div><div class="stop-name">Raja Ampat</div></div>
       <div class="stop"><div class="stop-dot" id="dot-komodo"></div><div class="stop-name">Komodo</div></div>
       <div class="stop"><div class="stop-dot" id="dot-bali"></div><div class="stop-name">Bali</div></div>
+    </div>
+  </div>
+
+  <!-- PHOTO STRIP — replace src URLs with your own photos when ready -->
+  <div class="photo-strip reveal">
+    <div class="photo-strip-item">
+      <img src="https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?w=400&q=80" alt="Sailboat on open ocean" loading="lazy">
+      <div class="photo-label">At Sea</div>
+    </div>
+    <div class="photo-strip-item">
+      <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&q=80" alt="Coral reef underwater" loading="lazy">
+      <div class="photo-label">Diving</div>
+    </div>
+    <div class="photo-strip-item">
+      <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=80" alt="Oregon coast cliffs" loading="lazy">
+      <div class="photo-label">Oregon</div>
     </div>
   </div>
 
@@ -511,14 +619,46 @@
   <!-- GEAR -->
   <div class="section-label reveal">Gear I actually use</div>
 
-  <a href="https://amzn.to/4awKLsA" target="_blank" rel="noopener" class="aff-card reveal">
-    <div class="aff-icon">📦</div>
-    <div class="aff-text">
-      <div class="aff-title">My Amazon Picks</div>
-      <div class="aff-desc">Gear I actually packed for the voyage</div>
+  <!-- AMAZON GEAR PICKER — add more gear-item rows as you get affiliate links -->
+  <div class="gear-card reveal" id="gearCard">
+    <button class="gear-trigger" id="gearTrigger" aria-expanded="false">
+      <div class="gear-icon">📦</div>
+      <div class="gear-text">
+        <div class="gear-title">My Amazon Gear Picks</div>
+        <div class="gear-desc">Tap to browse what I packed for the voyage</div>
+      </div>
+      <span class="gear-chevron">▾</span>
+    </button>
+    <div class="gear-items" id="gearItems">
+      <!-- ADD YOUR AFFILIATE LINKS BELOW — copy a gear-item block for each product -->
+      <a href="https://amzn.to/4awKLsA" target="_blank" rel="noopener" class="gear-item">
+        <span class="gear-item-name">Full Gear List</span>
+        <span class="gear-item-note">Everything I brought</span>
+        <span class="gear-item-arrow">→</span>
+      </a>
+      <!-- PLACEHOLDER ROWS — replace href="#" and names when you have links -->
+      <a href="#" class="gear-item">
+        <span class="gear-item-name">Dive Computer</span>
+        <span class="gear-item-note">Coming soon</span>
+        <span class="gear-item-arrow">→</span>
+      </a>
+      <a href="#" class="gear-item">
+        <span class="gear-item-name">Dry Bag</span>
+        <span class="gear-item-note">Coming soon</span>
+        <span class="gear-item-arrow">→</span>
+      </a>
+      <a href="#" class="gear-item">
+        <span class="gear-item-name">Headlamp</span>
+        <span class="gear-item-note">Coming soon</span>
+        <span class="gear-item-arrow">→</span>
+      </a>
+      <a href="#" class="gear-item">
+        <span class="gear-item-name">Seasickness Relief</span>
+        <span class="gear-item-note">Coming soon</span>
+        <span class="gear-item-arrow">→</span>
+      </a>
     </div>
-    <div class="aff-badge">Shop →</div>
-  </a>
+  </div>
 
   <a href="https://click.dji.com/AOx8khWksak6qn1pUckTkw?pm=link" target="_blank" rel="noopener" class="aff-card reveal">
     <div class="aff-icon">🎥</div>
@@ -578,6 +718,14 @@ document.addEventListener('click', () => {
 });
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') { navMenu.classList.remove('open'); navTrigger.setAttribute('aria-expanded', false); }
+});
+
+// ── GEAR PICKER ──
+const gearCard = document.getElementById('gearCard');
+const gearTrigger = document.getElementById('gearTrigger');
+gearTrigger.addEventListener('click', () => {
+  const open = gearCard.classList.toggle('open');
+  gearTrigger.setAttribute('aria-expanded', open);
 });
 
 // ── SCROLL REVEAL ──
