@@ -326,7 +326,7 @@
     border-radius: 10px;
     overflow: hidden;
     position: relative;
-    background: var(--pale);
+    background: linear-gradient(135deg, var(--pale) 0%, var(--foam) 100%);
   }
   .photo-strip-item img {
     width: 100%; height: 100%;
@@ -514,7 +514,7 @@
   </header>
 
   <!-- VOYAGE BANNER -->
-  <a href="https://www.seamester.com/semesters/fiji-to-bali-summer-2026/"
+  <a href="https://www.seamester.com/voyages/palau-to-bali/"
      target="_blank" rel="noopener"
      class="voyage-banner reveal" id="voyage-banner">
     <div class="voyage-dot"></div>
@@ -545,13 +545,13 @@
   <!-- PHOTO STRIP — replace src URLs with your own photos when ready -->
   <div class="photo-strip reveal">
     <div class="photo-strip-item">
-      <img src="https://images.unsplash.com/photo-1500514966906-fe245eea9344?w=400&q=80" alt="Sailboat on open ocean" loading="lazy">
+      <img src="img-boat.jpeg" alt="Boat on beach" loading="lazy">
     </div>
     <div class="photo-strip-item">
-      <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&q=80" alt="Coral reef underwater" loading="lazy">
+      <img src="img-diving.jpeg" alt="Scuba diving coral reef" loading="lazy">
     </div>
     <div class="photo-strip-item">
-      <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=80" alt="Oregon coast cliffs" loading="lazy">
+      <img src="img-mountains.jpeg" alt="Mountain sunrise" loading="lazy">
     </div>
   </div>
 
@@ -629,7 +629,7 @@
     <div class="gear-items" id="gearItems">
       <a href="https://amzn.to/4awKLsA" target="_blank" rel="noopener" class="gear-item">
         <span class="gear-item-name">Microfiber Surf Poncho</span>
-        <span class="gear-item-note">Quick-Dry, Post-Dive Essential</span>
+        <span class="gear-item-note">Quick-dry, post-dive essential</span>
         <span class="gear-item-arrow">→</span>
       </a>
       <a href="https://amzn.to/4eEV6Fj" target="_blank" rel="noopener" class="gear-item">
@@ -686,7 +686,7 @@
   </div>
 
   <div class="footer reveal">
-    <p>Building in public · Pacific Northwest &amp; the South Pacific · 2026</p>
+    <p>Building in public · Oregon &amp; the South Pacific · 2026</p>
   </div>
 
 </div>
@@ -752,7 +752,7 @@ reveals.forEach(el => io.observe(el));
     const d = Math.ceil((START - now) / 86400000);
     sEl.textContent = `Departing in ${d} day${d===1?'':'s'} · S/Y Argo`;
     tEl.textContent = '40-Day South Pacific Voyage';
-    subEl.textContent = 'Follow the trip logs on Seamester →';
+    subEl.textContent = 'Explore the destinations →';
   } else if (now < RAJA)   { sEl.textContent = 'Currently at sea · Palau'; dot('dot-palau','active'); }
   else if (now < KOMODO)   { sEl.textContent = 'Currently at sea · Raja Ampat'; dot('dot-palau','done'); dot('dot-raja','active'); }
   else if (now < BALI)     { sEl.textContent = 'Currently at sea · Komodo'; dot('dot-palau','done'); dot('dot-raja','done'); dot('dot-komodo','active'); }
